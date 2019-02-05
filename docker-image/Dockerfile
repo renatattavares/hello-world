@@ -3,7 +3,8 @@ RUN apt-get update
 RUN apt-get install nano
 RUN pip install --upgrade pip
 RUN pip install ipython
-RUN pip install pyhull
 RUN pip install pyyaml
+RUN pip install numba
+RUN pip install scipy
 
 WORKDIR $HOME
