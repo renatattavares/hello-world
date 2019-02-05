@@ -1,10 +1,14 @@
+Ubuntu!
+
+PARA LABCOM
+sudo docker run -t -it -v /home/renata/Documents/Repositorios/hello_world:/elliptic_case desenvolvimento bash -c "cd /elliptic_case;ipython"
+
+PESSOAL
+sudo docker run -t -it -v /home/renata/Documentos/Repositorios/hello-world:/elliptic_case desenvolvimento bash -c "cd /elliptic_case;ipython"
+
+
 Windows!
 
 docker run -it padmec/elliptic:1.0 bash
 
 docker run -t -it -v ${PWD}:/elliptic_case padmec/elliptic:1.0 bash -c "cd /elliptic_case;python hello.py"
-
-Ubuntu!
-
-sudo docker run -t -it -v /home/renata/Documents/Repositorios/hello_world:/elliptic_case desenvolvimento bash -c
-"cd /elliptic_case;ipython"
