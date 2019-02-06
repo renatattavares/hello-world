@@ -1,6 +1,6 @@
 import numpy as np
 import time
-import csv
+import xlsxwriter
 from tpfa_moab.gerador_malha import GeradorMalha as gm
 from tpfa_moab.condicoes_contorno import BoundaryConditions as bc
 from pymoab import types, rng, topo_util
@@ -34,9 +34,9 @@ def pressao_prescrita(coef, num_elements, nx, ny):
 
 ####################### Informações de entrada da malha ########################
 
-nx = 5 # Número de elementos na direção x
-ny = 5 # Número de elementos na direção y
-nz = 5 # Número de elementos na direção Z
+nx = 10 # Número de elementos na direção x
+ny = 10 # Número de elementos na direção y
+nz = 10 # Número de elementos na direção Z
 dx, dy, dz= 1.0, 1.0, 1.0 # Tamanho dos elementos nas direções x e y
 dim = 2
 num_elements = nx*ny*nz
@@ -71,8 +71,8 @@ for e in malha.elem_handles:
     centroid_coord = get_centroid_coords(elem_vertex)
     malha.mbcore.tag_set_data(centroid_tag, e, centroid_coord)
     malha.mbcore.tag_set_data(id_tag, e, np.array([i],dtype=np.float_))
-    if i <= 27000/2-1:
-        malha.mbcore.tag_set_data(permeability_tag, e, np.array([10], dtype=np.float_))
+    if i <= 10:
+        malha.mbcore.tag_set_data(permeability_tag, e, np.array([1], dtype=np.float_))
     else:
         malha.mbcore.tag_set_data(permeability_tag, e, np.array([1], dtype=np.float_))
     i = i+1
@@ -103,6 +103,21 @@ start = time.time()
 coef, q = pressao_prescrita(coef, num_elements, nx, ny)
 end = time.time()
 print("This step lasted {0}s".format(end-start))
+
+'''
+workbook = xlsxwriter.Workbook('coef_certo.xlsx')
+worksheet = workbook.add_worksheet()
+matrix = lil_matrix.toarray(coef)
+
+row = 0
+col = 0
+
+for row in range(125):
+  for col in range(125):
+    worksheet.write(row, col, matrix[row][col])
+
+workbook.close()
+'''
 
 print("Solving the problem")
 start = time.time()
