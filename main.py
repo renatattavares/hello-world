@@ -82,7 +82,7 @@ print("Assembly")# Montagem da matriz de coeficientes do sistema.
 start = time.time()
 coef = lil_matrix((num_elements, num_elements), dtype=np.float_)
 
-for i in range(len(malha.elem_handles)):
+for i in range(num_elements):
     bridge_adjacencies = mtu.get_bridge_adjacencies(malha.elem_handles[i], dim, 3, True)
     for j in range(len(bridge_adjacencies)):
         e1_tags = malha.mbcore.tag_get_tags_on_entity(bridge_adjacencies[j])

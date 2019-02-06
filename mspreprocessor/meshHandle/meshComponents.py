@@ -75,7 +75,7 @@ class MeshEntities(object):
         # lacks support for indexing with multiple numbers
         range_vec = self.create_range_vec(index)
         all_bridge = [self.mtu.get_bridge_adjacencies(el_handle, self.num[interface], self.num[target]) for el_handle
-                      in self.range_index(range_vec)]
+                  in self.range_index(range_vec)]
         inside_meshset = self.mb.get_entities_by_handle(self.meshset)
         all_brige_in_meshset = [rng.intersect(el_handle, inside_meshset) for el_handle in all_bridge]
         all_briges_in_meshset_id = np.array([self.read(el_handle) for el_handle in all_brige_in_meshset])
