@@ -2,7 +2,7 @@ import numpy as np
 import time
 from tpfa_moab.gerador_malha import GeradorMalha as gm
 from tpfa_moab.condicoes_contorno import BoundaryConditions as bc
-from pymoab import types, rng
+from pymoab import types, rng, topo_util
 from scipy.sparse import csr_matrix, lil_matrix
 from scipy.sparse.linalg import spsolve
 
@@ -21,13 +21,21 @@ def equiv_perm(k1, k2):
 def centroid_dist(c1, c2):
     return (c1[0] - c2[0])**2 + (c1[1] - c2[1])**2 + (c1[2] - c2[2])**2
 
-P_analitico = np.array([500,500,500,500 ,500 ,500 ,500 ,500 ,500 ,500 ,500 ,500 ,500 ,500 ,500 ,500 ,500 ,500 ,500 ,500 ,500 ,500 ,500 ,500 ,500 , 375, 375, 375, 375, 375, 375, 375, 375, 375, 375, 375, 375, 375, 375, 375, 375, 375, 375, 375, 375, 375, 375, 375, 375, 375, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 125, 125, 125, 125, 125, 125, 125, 125, 125, 125, 125, 125, 125, 125, 125, 125, 125, 125, 125, 125, 125, 125, 125, 125, 125, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+def pressao_prescrita(coef, num_elements, nx, ny):
+    q = lil_matrix((num_elements, 1), dtype=np.float_)
+    coef[0:nx*ny] = 0
+    q [0:nx*ny] = 500
+    coef[num_elements-(nx*ny):num_elements] = 0
+    for r in range(nx*ny):
+        coef[r,r] = 1
+        coef[r+num_elements-(nx*ny),r+num_elements-(nx*ny)] = 1
+    return coef, q
 
 ####################### Informações de entrada da malha ########################
 
-nx = 20 # Número de elementos na direção x
-ny = 20 # Número de elementos na direção y
-nz = 20 # Número de elementos na direção Z
+nx = 30 # Número de elementos na direção x
+ny = 30 # Número de elementos na direção y
+nz = 30 # Número de elementos na direção Z
 dx, dy, dz= 1.0, 1.0, 1.0 # Tamanho dos elementos nas direções x e y
 dim = 2
 num_elements = nx*ny*nz
@@ -38,31 +46,10 @@ value = 500
 linha = 0
 coluna = 0
 
-print("Inicializando a malha")
+print("Initializating mesh")
 # Inicializando a malha
 malha = gm(nx,ny,nz,dx,dy,dz,num_elements)
-
-print("Getting adjacencies")
-adjacencies = [malha.mbcore.get_adjacencies(e, dim, True) for e in malha.elem_handles]# Encontrando adjacências para preencher a matriz de conectividade
-
-print("Connectivity matrix")
-start = time.time()
-# Incialização da matriz de conectividade. (Neste caso, a conectividade é em relação aos elementos, ou seja, quais elementos são vizinhos.)
-connectivity = np.zeros((num_elements, num_elements), dtype=np.bool_)
-# Para cada adjacência diferente, verifica-se se existem uma fronteira compartilhada. Caso positivo, os dois elementos são vizinhos e isto é indicado em connectivity.
-i, j = 0, 0
-for a in adjacencies:
-    for b in adjacencies:
-        if b != a:
-            intersection = rng.intersect(a, b)
-            if not intersection.empty():
-                connectivity[i][j] = 1
-                connectivity[j][i] = 1
-        j += 1
-    j = 0
-    i += 1
-end = time.time()
-print("This step lasted {0}s".format(end-start))
+mtu = topo_util.MeshTopoUtil(malha.mbcore)
 
 print("Creating tags")
 start = time.time()
@@ -82,8 +69,11 @@ for e in malha.elem_handles:
     elem_vertex = malha.mbcore.get_connectivity(e) # Função que informa quais os vérticies que compõem a entidade
     centroid_coord = get_centroid_coords(elem_vertex)
     malha.mbcore.tag_set_data(centroid_tag, e, centroid_coord)
-    malha.mbcore.tag_set_data(permeability_tag, e, np.array([1], dtype=np.float_))
     malha.mbcore.tag_set_data(id_tag, e, np.array([i],dtype=np.float_))
+    if i <= 27000/2-1:
+        malha.mbcore.tag_set_data(permeability_tag, e, np.array([10], dtype=np.float_))
+    else:
+        malha.mbcore.tag_set_data(permeability_tag, e, np.array([1], dtype=np.float_))
     i = i+1
 end = time.time()
 print("This step lasted {0}s".format(end-start))
@@ -91,35 +81,25 @@ print("This step lasted {0}s".format(end-start))
 print("Assembly")# Montagem da matriz de coeficientes do sistema.
 start = time.time()
 coef = lil_matrix((num_elements, num_elements), dtype=np.float_)
-for i in range(num_elements):
-    for j in range(num_elements):
-        # Se dois elementos são vizinhos e não se trata do mesmo elemento, então
-        # são recuperados os valores das tags e calculado o valor do coeficiente.
-        if connectivity[i,j] == True and i != j:
-            e1_tags = malha.mbcore.tag_get_tags_on_entity(malha.elem_handles[i])
-            e2_tags = malha.mbcore.tag_get_tags_on_entity(malha.elem_handles[j])
-            e1_centroid = malha.mbcore.tag_get_data(e1_tags[0], malha.elem_handles[i], flat=True)
-            e2_centroid = malha.mbcore.tag_get_data(e2_tags[0], malha.elem_handles[j], flat=True)
-            e1_perm = malha.mbcore.tag_get_data(e1_tags[1], malha.elem_handles[i], flat=True)[0]
-            e2_perm = malha.mbcore.tag_get_data(e2_tags[1], malha.elem_handles[j], flat=True)[0]
-            coef[i,j] = equiv_perm(e1_perm, e2_perm)/centroid_dist(e1_centroid, e2_centroid)
+
+for i in range(len(malha.elem_handles)):
+    bridge_adjacencies = mtu.get_bridge_adjacencies(malha.elem_handles[i], dim, 3, True)
+    for j in range(len(bridge_adjacencies)):
+        e1_tags = malha.mbcore.tag_get_tags_on_entity(bridge_adjacencies[j])
+        e2_tags = malha.mbcore.tag_get_tags_on_entity(malha.elem_handles[i])
+        e1_centroid = malha.mbcore.tag_get_data(e1_tags[0], bridge_adjacencies[j], flat=True)
+        e2_centroid = malha.mbcore.tag_get_data(e2_tags[0], malha.elem_handles[i], flat=True)
+        e1_perm = malha.mbcore.tag_get_data(e1_tags[1], bridge_adjacencies[j], flat=True)
+        e2_perm = malha.mbcore.tag_get_data(e2_tags[1], malha.elem_handles[i], flat=True)
+        e1_id = malha.mbcore.tag_get_data(e1_tags[2], bridge_adjacencies[j], flat=True)
+        coef[i,e1_id] = equiv_perm(e1_perm, e2_perm)/centroid_dist(e1_centroid, e2_centroid)
     coef[i,i] = (-1)*coef[i].sum()
 end = time.time()
 print("This step lasted {0}s".format(end-start))
 
-def pressao_prescrita(coef):
-    q = lil_matrix((num_elements, 1), dtype=np.float_)
-    coef[0:25] = 0
-    q [0:25] = 500
-    coef[100:125] = 0
-    for r in range(25):
-        coef[r,r] = 1
-        coef[r+100,r+100] = 1
-    return coef, q
-
 print("Setting boundary conditions")
 start = time.time()
-coef, q = pressao_prescrita(coef)
+coef, q = pressao_prescrita(coef, num_elements, nx, ny)
 end = time.time()
 print("This step lasted {0}s".format(end-start))
 

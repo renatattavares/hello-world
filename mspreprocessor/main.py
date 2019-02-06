@@ -33,30 +33,10 @@ num_elements = 5*5*5
 
 ################################################################################
 
-adjacencies = [M.core.mb.get_adjacencies(e, 2, True) for e in M.volumes.elements_handle]# Encontrando adjacências para preencher a matriz de conectividade
-
-# Incialização da matriz de conectividade. (Neste caso, a conectividade é em relação aos elementos, ou seja, quais elementos são vizinhos.)
-connectivity = np.zeros((num_elements, num_elements), dtype=np.bool_)
-
-print("Gerando matriz das conectividades (booleana)")
-# Para cada adjacência diferente, verifica-se se existem uma fronteira compartilhada. Caso positivo, os dois elementos são vizinhos e isto é indicado em connectivity.
-i, j = 0, 0
-for a in adjacencies:
-    for b in adjacencies:
-        if b != a:
-            intersection = rng.intersect(a, b)
-            if not intersection.empty():
-                connectivity[i][j] = 1
-                connectivity[j][i] = 1
-        j += 1
-    j = 0
-    i += 1
-
 print("Definindo permeabilidade do meio")
 M.permeability[:] = np.array([1])
 
 print("Solving the problem")
-
 coef = lil_matrix((num_elements, num_elements), dtype=np.float_)
 for i in range(num_elements):
     for j in range(num_elements):
