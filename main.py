@@ -1,5 +1,6 @@
 import numpy as np
 import time
+import csv
 from tpfa_moab.gerador_malha import GeradorMalha as gm
 from tpfa_moab.condicoes_contorno import BoundaryConditions as bc
 from pymoab import types, rng, topo_util
@@ -33,9 +34,9 @@ def pressao_prescrita(coef, num_elements, nx, ny):
 
 ####################### Informações de entrada da malha ########################
 
-nx = 30 # Número de elementos na direção x
-ny = 30 # Número de elementos na direção y
-nz = 30 # Número de elementos na direção Z
+nx = 5 # Número de elementos na direção x
+ny = 5 # Número de elementos na direção y
+nz = 5 # Número de elementos na direção Z
 dx, dy, dz= 1.0, 1.0, 1.0 # Tamanho dos elementos nas direções x e y
 dim = 2
 num_elements = nx*ny*nz
