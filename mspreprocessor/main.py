@@ -21,7 +21,7 @@ def centroid_dist(c1, c2):
 print("Initializating mesh")
 start = time.time()
 dx, dy, dz = 1, 1, 1
-nx, ny, nz = 10, 10, 10
+nx, ny, nz = 20, 20, 20
 num_elements = nx*ny*nz
 M = msh("malha-teste.h5m", dim = 3)
 vec = np.arange(len(M.alma)).astype(int)
@@ -33,13 +33,15 @@ M.permeability[:] = 1
 
 print("Assembly")
 start = time.time()
+perm = M.permeability[:]
+adj = M.volumes.bridge_adjacencies(M.volumes.all, 2, 3)
+center = M.volumes.center[M.volumes.all]
 coef = lil_matrix((num_elements, num_elements), dtype=np.float_)
 for i in range(num_elements):
-    adjacencies = M.volumes.bridge_adjacencies(i, 2, 3)
-    length = np.shape(adjacencies)
-    for j in range(length[1]):
-        id = np.array([adjacencies[0][j]],  dtype= np.int)
-        coef[i,id] = equiv_perm(M.permeability[i], M.permeability[id])/centroid_dist(M.volumes.center[i], M.volumes.center[id])
+    adjacencies = adj[i]
+    for j in range(len(adjacencies)):
+        id = np.array([adjacencies[j]],  dtype= np.int)
+        coef[i,id] = equiv_perm(perm[i], perm[id])/centroid_dist(center[i], center[id])
     coef[i,i] = (-1)*coef[i].sum()
 end = time.time()
 print("This step lasted {0}s".format(end-start))

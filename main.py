@@ -34,9 +34,9 @@ def pressao_prescrita(coef, num_elements, nx, ny):
 
 ####################### Informações de entrada da malha ########################
 
-nx = 10 # Número de elementos na direção x
-ny = 10 # Número de elementos na direção y
-nz = 10 # Número de elementos na direção Z
+nx = 20 # Número de elementos na direção x
+ny = 20 # Número de elementos na direção y
+nz = 20 # Número de elementos na direção Z
 dx, dy, dz= 1.0, 1.0, 1.0 # Tamanho dos elementos nas direções x e y
 dim = 2
 num_elements = nx*ny*nz
