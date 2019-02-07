@@ -122,3 +122,4 @@ class CoarseVolume(FineScaleMeshMS):
 
     def init_coarse_variables(self):
         self.lama = MoabVariableMS(self.core,data_size=1,var_type= "faces",  data_format="int", name_tag="lama", level=self.level, coarse_num=self.coarse_num)
+        self.pressure_coarse = MoabVariableMS(self.core,data_size=1,var_type= "volumes",  data_format="float", name_tag="pressure_coarse", level=self.level, coarse_num=self.coarse_num)

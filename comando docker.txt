@@ -1,7 +1,7 @@
 Ubuntu!
 
 PARA LABCOM
-sudo docker run -t -it -v /home/renata/Documents/Repositorios/hello_world:/elliptic_case desenvolvimento bash -c "cd /elliptic_case;ipython"
+sudo docker run -t -it -v /home/renata/Documents/Repositorios/hello-world:/elliptic_case desenvolvimento bash -c "cd /elliptic_case;ipython"
 
 PESSOAL
 sudo docker run -t -it -v /home/renata/Documentos/Repositorios/hello-world:/elliptic_case desenvolvimento bash -c "cd /elliptic_case;ipython"
