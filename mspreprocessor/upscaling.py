@@ -85,18 +85,18 @@ for i in range(len(M.coarse_volumes)):
 
 print("Assembly of upscaling")
 start = time.time()
-center = M.volumes.center[M.volumes.all]
 coef = lil_matrix((64, 64), dtype=np.float_)
+
+#for i in range(len(M.coarse_volumes)):
+#    coarse_centroid[i] = (sum(M.coarse_volumes[i].volumes.center)/125)
 
 for i in range(len(M.coarse_volumes)):
     #M.coarse_volumes[i].permeability_coarse[:] = permeability_coarse
     #perm = M.coarse_volumes[i].permeability_coarse[:]
     adj = M.coarse_volumes[i].faces.coarse_neighbors
-    coarse_centroid = sum(M.coarse_volumes[i].volumes.center)/125
     for j in range(len(adj)):
         id = np.array(adj[j],  dtype= np.int)
-        coarse_centroid_adj = sum(M.coarse_volumes[id].volumes.center)/125
-        coef[i,id] = equiv_perm(1, 1)/centroid_dist(coarse_centroid, coarse_centroid_adj)
+        coef[i,id] = equiv_perm(1, 1)/2.5
     coef[i,i] = (-1)*coef[i].sum()
 end = time.time()
 print("This step lasted {0}s".format(end-start))
@@ -115,14 +115,23 @@ print("This step lasted {0}s".format(end-start))
 
 print("Solving the problem")
 start = time.time()
-coef = lil_matrix.tocsr(bc.coef)
-q = lil_matrix.tocsr(bc.q)
+coef = lil_matrix.tocsr(coef)
+q = lil_matrix.tocsr(q)
 P = spsolve(coef,q)
 end = time.time()
 print("This step lasted {0}s".format(end-start))
 
-for i in range(len(M.coarse_volumes)):
-    M.coarse_volumes[i].pressure_coarse[:] = P[i]
+
+for cvolume,index in zip(M.coarse_volumes,range(len(P))):
+    M.pressure[cvolume.volumes.global_id[cvolume.volumes.all]] = P[index]
+
+
+# for cvolume,index in zip(M.coarse_volumes,range(len(P))):
+#     cvolume.pressure_coarse[:] = P[index]
+
+#
+# for i in range(len(M.coarse_volumes)):
+#     M.pressure[M.coarse_volumes[i].volumes.global_idM.coarse_volumes[i].volumes.all] = P[i]
 
 print("Printing results")
 M.core.print()
