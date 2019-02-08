@@ -76,10 +76,9 @@ end = time.time()
 print("This step lasted {0}s".format(end-start))
 
 print("Storing results")
+
 start = time.time()
-for i in range(num_elements):
-    M.pressure[i] = P[i]
-    #M.erro[i] = P[i]-P_analitico[i]
+M.pressure[:] = P
 end = time.time()
 print("This step lasted {0}s".format(end-start))
 

@@ -70,9 +70,7 @@ for i in range(len(M.coarse_volumes)):
 
     print("Storing results of coarse volume {0}".format(i))
     start = time.time()
-    for a in range(125):
-        M.coarse_volumes[i].pressure_coarse[a] = P_coarse_volume[a]
-        #M.erro[i] = P[i]-P_analitico[i]
+    M.coarse_volumes[i].pressure_coarse[:] = P_coarse_volume
     end = time.time()
     print("This step lasted {0}s".format(end-start))
 
@@ -84,27 +82,34 @@ for i in range(len(M.coarse_volumes)):
 
     permeability_coarse = total_flow/((area*25)*(M.coarse_volumes[i].pressure_coarse[v]-M.coarse_volumes[i].pressure_coarse[v+25]))
     print(permeability_coarse)
-'''
-M.permeability_coarse[:] = permeability_coarse
 
-print("Assembly of upscale")
+print("Assembly of upscaling")
 start = time.time()
-perm = M.permeability_coarse[:]
-adj = M.volumes.bridge_adjacencies(M.volumes.all, 2, 3)
 center = M.volumes.center[M.volumes.all]
-coef = lil_matrix((num_elements, num_elements), dtype=np.float_)
-for i in range(num_elements):
-    adjacencies = adj[i]
-    for j in range(len(adjacencies)):
-        id = np.array([adjacencies[j]],  dtype= np.int)
-        coef[i,id] = equiv_perm(perm[i], perm[id])/centroid_dist(center[i], center[id])
+coef = lil_matrix((64, 64), dtype=np.float_)
+
+for i in range(len(M.coarse_volumes)):
+    #M.coarse_volumes[i].permeability_coarse[:] = permeability_coarse
+    #perm = M.coarse_volumes[i].permeability_coarse[:]
+    adj = M.coarse_volumes[i].faces.coarse_neighbors
+    coarse_centroid = sum(M.coarse_volumes[i].volumes.center)/125
+    for j in range(len(adj)):
+        id = np.array(adj[j],  dtype= np.int)
+        coarse_centroid_adj = sum(M.coarse_volumes[id].volumes.center)/125
+        coef[i,id] = equiv_perm(1, 1)/centroid_dist(coarse_centroid, coarse_centroid_adj)
     coef[i,i] = (-1)*coef[i].sum()
 end = time.time()
 print("This step lasted {0}s".format(end-start))
 
-print("Setting boundary conditions")
+print("Setting boundary conditions of coarse mesh")
 start = time.time()
-bc = BoundaryConditions(num_elements, nx, ny, coef)
+q = lil_matrix((64, 1), dtype=np.float_)
+coef[0:16] = 0
+q [0:16] = 500
+coef[48:64] = 0
+for r in range(16):
+    coef[r,r] = 1
+    coef[r+48,r+48] = 1
 end = time.time()
 print("This step lasted {0}s".format(end-start))
 
@@ -116,14 +121,8 @@ P = spsolve(coef,q)
 end = time.time()
 print("This step lasted {0}s".format(end-start))
 
-print("Storing results")
-start = time.time()
-for i in range(num_elements):
-    M.pressure[i] = P[i]
-    #M.erro[i] = P[i]-P_analitico[i]
-end = time.time()
-print("This step lasted {0}s".format(end-start))
-'''
+for i in range(len(M.coarse_volumes)):
+    M.coarse_volumes[i].pressure_coarse[:] = P[i]
 
 print("Printing results")
 M.core.print()
