@@ -21,9 +21,12 @@ def centroid_dist(c1, c2):
 print("Initializating mesh")
 start = time.time()
 dx, dy, dz = 1, 1, 1
-nx, ny, nz = 20, 20, 20
+nx, ny, nz = 20, 20,20
+cx, cy, cz = 5, 5, 5
+rx, ry, rz = 4, 4, 4
 num_elements = nx*ny*nz
-M = msh("malha-teste.h5m", dim = 3)
+num_elements_coarse = rx*ry*rz
+M = msh("20.h5m", dim = 3)
 vec = np.arange(len(M.alma)).astype(int)
 end = time.time()
 print("This step lasted {0}s".format(end-start))
@@ -38,25 +41,25 @@ for i in range(len(M.coarse_volumes)):
     adj = M.coarse_volumes[i].volumes.bridge_adjacencies(M.coarse_volumes[i].volumes.all, 2, 3) # IDs locais
     perm = M.permeability[M.coarse_volumes[i].volumes.global_id[M.coarse_volumes[i].volumes.all]]
     center = M.coarse_volumes[i].volumes.center[M.coarse_volumes[i].volumes.all]
-    coef = lil_matrix((125, 125), dtype=np.float_)
-    for b in range(125):
+    coef = lil_matrix((num_elements_coarse, num_elements_coarse), dtype=np.float_)
+    for b in range(num_elements_coarse):
         adjacencies = adj[b] # Array de IDs locais
         for c in range(len(adjacencies)):
             id = np.array( [adjacencies[c]],  dtype= np.int)
-            coef[b,id] = equiv_perm(perm[b], perm[id])/centroid_dist(center[b], center[id])
+            coef[b,id] = equiv_perm(perm[b], perm[id])/1
         coef[b,b] = (-1)*coef[b].sum()
     end = time.time()
     print("This step lasted {0}s".format(end-start))
 
     print("Setting boundary conditions of coarse volume {0}".format(i))
     start = time.time()
-    q = lil_matrix((125, 1), dtype=np.float_)
-    coef[0:25] = 0
-    q [0:25] = 500
-    coef[100:125] = 0
-    for r in range(25):
+    q = lil_matrix((num_elements_coarse, 1), dtype=np.float_)
+    coef[0:rx*ry] = 0
+    q [0:rx*ry] = 500
+    coef[(num_elements_coarse)-(rx*ry):num_elements_coarse] = 0
+    for r in range(rx*ry):
         coef[r,r] = 1
-        coef[r+100,r+100] = 1
+        coef[r+(num_elements_coarse)-(rx*ry),r+(num_elements_coarse)-(rx*ry)] = 1
     end = time.time()
     print("This step lasted {0}s".format(end-start))
 
@@ -76,16 +79,16 @@ for i in range(len(M.coarse_volumes)):
 
     total_flow = 0.0
     flow_rate = 0.0
-    for v in range(25):
-        flow_rate =  + equiv_perm(perm[v], perm[v+25])*area*(M.coarse_volumes[i].pressure_coarse[v]-M.coarse_volumes[i].pressure_coarse[v+25])
+    for v in range(rx*ry):
+        flow_rate =  + equiv_perm(perm[v], perm[v+rx*ry])*area*(M.coarse_volumes[i].pressure_coarse[v]-M.coarse_volumes[i].pressure_coarse[v+rx*ry])
         total_flow = total_flow + flow_rate
 
-    permeability_coarse = total_flow/((area*25)*(M.coarse_volumes[i].pressure_coarse[v]-M.coarse_volumes[i].pressure_coarse[v+25]))
+    permeability_coarse = total_flow/((area*rx*ry)*(M.coarse_volumes[i].pressure_coarse[v]-M.coarse_volumes[i].pressure_coarse[v+rx*ry]))
     print(permeability_coarse)
 
 print("Assembly of upscaling")
 start = time.time()
-coef = lil_matrix((64, 64), dtype=np.float_)
+coef = lil_matrix((len(M.coarse_volumes), len(M.coarse_volumes)), dtype=np.float_)
 
 #for i in range(len(M.coarse_volumes)):
 #    coarse_centroid[i] = (sum(M.coarse_volumes[i].volumes.center)/125)
@@ -96,20 +99,20 @@ for i in range(len(M.coarse_volumes)):
     adj = M.coarse_volumes[i].faces.coarse_neighbors
     for j in range(len(adj)):
         id = np.array(adj[j],  dtype= np.int)
-        coef[i,id] = equiv_perm(1, 1)/2.5
+        coef[i,id] = equiv_perm(1, 1)/25
     coef[i,i] = (-1)*coef[i].sum()
 end = time.time()
 print("This step lasted {0}s".format(end-start))
 
 print("Setting boundary conditions of coarse mesh")
 start = time.time()
-q = lil_matrix((64, 1), dtype=np.float_)
-coef[0:16] = 0
-q [0:16] = 500
-coef[48:64] = 0
-for r in range(16):
+q = lil_matrix((len(M.coarse_volumes), 1), dtype=np.float_)
+coef[0:25] = 0
+q [0:25] = 500
+coef[100:125] = 0
+for r in range(25):
     coef[r,r] = 1
-    coef[r+48,r+48] = 1
+    coef[r+100,r+100] = 1
 end = time.time()
 print("This step lasted {0}s".format(end-start))
 
