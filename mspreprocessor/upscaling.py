@@ -4,7 +4,6 @@ import time
 import pdb
 import geoUtil.geoTools as gtool
 import xlsxwriter
-import cProfile
 from math import pi, sqrt
 from pymoab import rng, types
 from meshHandle.multiscaleMesh import FineScaleMeshMS as msh
@@ -26,8 +25,8 @@ nx, ny, nz = 20, 20,20
 cx, cy, cz = 5, 5, 5
 rx, ry, rz = 4, 4, 4
 num_elements = nx*ny*nz
-M = msh("malha-teste.h5m", dim = 3)
-#vec = np.arange(len(M.alma)).astype(int)
+num_elements_coarse = rx*ry*rz
+M = msh("20.h5m", dim = 3)
 end = time.time()
 print("This step lasted {0}s".format(end-start))
 

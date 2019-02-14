@@ -23,6 +23,7 @@ class FineScaleMeshMS(FineScaleMesh):
         super().__init__(mesh_file,dim)
         self.partition = self.init_partition()
         self.coarse_volumes = [CoarseVolume(self.core, self.dim, i, self.partition[:] == i) for i in range(self.partition[:].max()+1 )]
+        print("Creating object general")
         self.general = MultiscaleMeshEntities(self.core,self.coarse_volumes)
         for i,el in zip(range(len(self.coarse_volumes)),self.coarse_volumes):
             el(i,self.general)

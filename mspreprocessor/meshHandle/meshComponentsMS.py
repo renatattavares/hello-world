@@ -94,8 +94,11 @@ class MoabVariableMS(MoabVariable):
 
 class MultiscaleMeshEntities(object):
     def __init__(self,father_core,coarse_list):
+        print("Calling moab core inside MultiscaleMeshEntities")
         self.mb = father_core.mb
+        print("Calculating the number of coarse volumes of the mesh")
         self.num_coarse = len(coarse_list)
+        print("Setting the coarse neighbors of primal mesh")
         self.find_coarse_neighbours(coarse_list)
         self.num = {"nodes": 0, "node": 0, "edges": 1, "edge": 1, "faces": 2, "face": 2, "volumes": 3, "volume": 3,
                              0: 0, 1: 1, 2: 2, 3: 3}
