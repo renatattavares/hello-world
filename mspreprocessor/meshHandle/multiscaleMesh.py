@@ -8,8 +8,7 @@ import msCoarseningLib.algoritmo
 from . meshComponents import MoabVariable, MeshEntities
 from . mscorePymoab import MsCoreMoab
 
-from . meshComponentsMS import MultiscaleMeshEntities ,MoabVariableMS,  MeshEntitiesMS
-
+from . meshComponentsMS import MultiscaleMeshEntities, MoabVariableMS,  MeshEntitiesMS
 
 import numpy as np
 from math import pi, sqrt
@@ -20,10 +19,11 @@ print('Initializing Finescale Mesh for Multiscale Methods')
 
 
 class FineScaleMeshMS(FineScaleMesh):
-    def __init__(self,mesh_file, dim=3):
+    def __init__(self,mesh_file, dim = 3):
         super().__init__(mesh_file,dim)
         self.partition = self.init_partition()
         self.coarse_volumes = [CoarseVolume(self.core, self.dim, i, self.partition[:] == i) for i in range(self.partition[:].max()+1 )]
+        print("Creating object general")
         self.general = MultiscaleMeshEntities(self.core,self.coarse_volumes)
         for i,el in zip(range(len(self.coarse_volumes)),self.coarse_volumes):
             el(i,self.general)
@@ -37,10 +37,9 @@ class FineScaleMeshMS(FineScaleMesh):
 
 
     def init_variables(self):
-        self.alma = MoabVariableMS(self.core,data_size=1,var_type= "volumes",  data_format="int", name_tag="alma")
-        self.ama = MoabVariableMS(self.core,data_size=1,var_type= "faces",  data_format="float", name_tag="ama",data_density="sparse")
-        self.arma = MoabVariableMS(self.core,data_size=3,var_type= "edges",  data_format="float", name_tag="arma",
-                                 data_density="sparse")
+        #self.alma = MoabVariableMS(self.core,data_size=1,var_type= "volumes",  data_format="int", name_tag="alma")
+        #self.ama = MoabVariableMS(self.core,data_size=1,var_type= "faces",  data_format="float", name_tag="ama",data_density="sparse")
+        #self.arma = MoabVariableMS(self.core,data_size=3,var_type= "edges",  data_format="float", name_tag="arma", data_density="sparse")
         self.permeability = MoabVariableMS(self.core,data_size=1,var_type= "volumes",  data_format="int", name_tag="permeability")
         self.pressure = MoabVariableMS(self.core,data_size=1,var_type= "volumes",  data_format="float", name_tag="pressure")
         self.erro = MoabVariableMS(self.core,data_size=1,var_type= "volumes",  data_format="float", name_tag="erro")
@@ -121,6 +120,6 @@ class CoarseVolume(FineScaleMeshMS):
         pass
 
     def init_coarse_variables(self):
-        self.lama = MoabVariableMS(self.core,data_size=1,var_type= "faces",  data_format="int", name_tag="lama", level=self.level, coarse_num=self.coarse_num)
+        #self.lama = MoabVariableMS(self.core,data_size=1,var_type= "faces",  data_format="int", name_tag="lama", level=self.level, coarse_num=self.coarse_num)
         self.pressure_coarse = MoabVariableMS(self.core,data_size=1,var_type= "volumes",  data_format="float", name_tag="pressure_coarse", level=self.level, coarse_num=self.coarse_num)
         self.permeability_coarse = MoabVariableMS(self.core,data_size=1,var_type= "volumes",  data_format="float", name_tag="permeability_coarse", level=self.level, coarse_num=self.coarse_num)

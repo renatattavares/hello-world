@@ -27,7 +27,6 @@ rx, ry, rz = 4, 4, 4
 num_elements = nx*ny*nz
 num_elements_coarse = rx*ry*rz
 M = msh("20.h5m", dim = 3)
-vec = np.arange(len(M.alma)).astype(int)
 end = time.time()
 print("This step lasted {0}s".format(end-start))
 

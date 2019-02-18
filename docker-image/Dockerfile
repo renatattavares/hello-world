@@ -7,5 +7,7 @@ RUN pip install pyyaml
 RUN pip install numba
 RUN pip install scipy
 RUN pip install XlsxWriter==1.1.2
+RUN pip install pyprof2calltree
+
 
 WORKDIR $HOME
