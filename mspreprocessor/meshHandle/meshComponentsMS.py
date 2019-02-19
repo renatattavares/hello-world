@@ -2,7 +2,7 @@ import numpy as np
 from . meshComponents import MoabVariable, MeshEntities
 
 from pymoab import types, rng
-import geoUtil.geoTools as gtool
+import mspreprocessor.geoUtil.geoTools as gtool
 import pdb
 
 
