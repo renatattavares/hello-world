@@ -7,25 +7,28 @@ from math import sqrt
 from pymoab import rng, types
 from scipy.sparse import csr_matrix, lil_matrix
 from scipy.sparse.linalg import spsolve
-import mspreprocessor.geoUtil.geoTools as gtool
-from mspreprocessor.meshHandle.multiscaleMesh import FineScaleMeshMS as msh
-from mspreprocessor.tpfa.boundary_conditions import BoundaryConditions
+#import mspreprocessor.geoUtil.geoTools as gtool
+#from mspreprocessor.meshHandle.multiscaleMesh import FineScaleMeshMS as msh
+#from mspreprocessor.tpfa.boundary_conditions import BoundaryConditions
+import mspreprocessor.preprocessor
+
+run(mspreprocessor.preprocessor)
 
 def equiv_perm(k1, k2):
     return (2*k1*k2)/(k1 + k2)
 
 def centroid_dist(c1, c2):
     return ((c1-c2)**2).sum()
-
+'''
 print("Initializating mesh")
 start = time.time()
 dx, dy, dz = 1, 1, 1
-nx, ny, nz = 20, 20, 20
+nx, ny, nz = 5, 5, 5
 num_elements = nx*ny*nz
-M = msh("20.h5m", dim = 3)
+M = msh("5.h5m", dim = 3)
 end = time.time()
 print("This step lasted {0}s".format(end-start))
-
+'''
 print("Setting the permeability")
 M.permeability[:] = 1
 
