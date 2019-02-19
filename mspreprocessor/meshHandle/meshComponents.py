@@ -1,6 +1,6 @@
 import numpy as np
 from pymoab import types, rng
-import geoUtil.geoTools as gtool
+from geoUtil import geoTools as gtool
 import pdb
 
 

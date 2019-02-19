@@ -2,13 +2,13 @@
 import numpy as np
 import time
 import pdb
-import geoUtil.geoTools as gtool
+import mspreprocessor.geoUtil.geoTools as gtool
 import xlsxwriter
 from math import pi, sqrt
 from pymoab import rng, types
-from meshHandle.multiscaleMesh import FineScaleMeshMS as msh
-from meshHandle.corePymoab import CoreMoab as core
-from tpfa.boundary_conditions import BoundaryConditions
+from mspreprocessor.meshHandle.multiscaleMesh import FineScaleMeshMS as msh
+from mspreprocessor.meshHandle.corePymoab import CoreMoab as core
+from mspreprocessor.tpfa.boundary_conditions import BoundaryConditions
 from scipy.sparse import csr_matrix, lil_matrix
 from scipy.sparse.linalg import spsolve
 
