@@ -1,9 +1,11 @@
-
+"""
+Module for implementation of multiscale mesh and CoarseVolumes objects functionalities
+"""
 import time
 import pdb
 import configparser as cp
 from . finescaleMesh import FineScaleMesh
-import msCoarseningLib.algoritmo
+from ..msCoarseningLib import algoritmo
 #from msCoarseningLib.configManager import readConfig
 from . meshComponents import MoabVariable, MeshEntities
 from . mscorePymoab import MsCoreMoab
@@ -58,7 +60,7 @@ class FineScaleMeshMS(FineScaleMesh):
                 used_attributes = []
                 for at in specific_attributes:
                     used_attributes.append(float(at[1]))
-                [partition[:],coarse_center]  = getattr(msCoarseningLib.algoritmo, name_function)(self.volumes.center[:],
+                [partition[:],coarse_center]  = getattr(algoritmo, name_function)(self.volumes.center[:],
                            len(self), self.rx, self.ry, self.rz,*used_attributes)
             elif self.dim == 2:
                 partition = MoabVariable(self.core,data_size=1,var_type= "faces",  data_format="int", name_tag="Partition",

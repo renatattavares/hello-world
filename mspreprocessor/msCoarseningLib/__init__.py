@@ -1,6 +1,6 @@
 #Multiscale preprocessors for reservoir simulation using PRESTO.
 
-print('Inicializando Engrocador de Malha')
+print('Partitioning module initialized')
 
 __all__ = ["readConfig","algoritmo"]
 #import meshManager

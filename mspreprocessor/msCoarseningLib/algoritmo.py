@@ -1,4 +1,6 @@
-
+"""
+Schemes of partitioning
+"""
 
 import numpy as np
 from numba import jit

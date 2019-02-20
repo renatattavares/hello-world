@@ -1,4 +1,6 @@
-
+"""
+Module for management of fine scale mesh 
+"""
 import time
 import pdb
 import numpy as np
@@ -7,8 +9,8 @@ from pymoab import core, types, rng, topo_util
 from . corePymoab import CoreMoab
 from . meshComponents import MoabVariable, MeshEntities
 
-
 print('Standard fine-scale mesh loaded: No multiscale components available')
+
 class FineScaleMesh:
     def __init__(self,mesh_file, dim=3):
         self.dim = dim

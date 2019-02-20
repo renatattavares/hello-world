@@ -1,6 +1,10 @@
+"""
+Generator of mesh entities and tags
+"""
+
 import numpy as np
 from pymoab import types, rng
-from geoUtil import geoTools as gtool
+from ..geoUtil import geoTools as gtool
 import pdb
 
 
@@ -16,6 +20,12 @@ class GetItem(object):
 
 
 class MeshEntities(object):
+    """
+    The MeshEntities' docstring
+
+    Define something here!
+    """
+
     def __init__(self, core, entity_type):
         self.mb = core.mb
         self.mtu = core.mtu
@@ -72,6 +82,11 @@ class MeshEntities(object):
 
 
     def bridge_adjacencies(self, index, interface, target):
+        """
+        The bridge_adjacencies' docstring
+
+        Define bridge_adjacencies here!
+        """
         # lacks support for indexing with multiple numbers
         range_vec = self.create_range_vec(index)
         all_bridge = [self.mtu.get_bridge_adjacencies(el_handle, self.num[interface], self.num[target]) for el_handle

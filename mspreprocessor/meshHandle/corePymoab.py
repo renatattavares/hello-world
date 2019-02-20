@@ -1,3 +1,6 @@
+"""
+Use of Pymoab methods to read and manage the input mesh
+"""
 from pymoab import core, types, rng, topo_util
 from pymoab import skinner as sk
 import numpy as np
@@ -306,7 +309,7 @@ class CoreMoab:
 
         m3 = self.mb.create_meshset()
         self.mb.add_entities(m3, self.all_volumes)
-        
+
         m4 = self.mb.create_meshset()
         self.mb.add_entities(m4, self.all_edges)
         if text is None:

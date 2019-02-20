@@ -2,33 +2,29 @@
 import numpy as np
 import time
 import pdb
-import mspreprocessor.geoUtil.geoTools as gtool
 import xlsxwriter
 from math import pi, sqrt
 from pymoab import rng, types
-from mspreprocessor.meshHandle.multiscaleMesh import FineScaleMeshMS as msh
-from mspreprocessor.meshHandle.corePymoab import CoreMoab as core
-from mspreprocessor.tpfa.boundary_conditions import BoundaryConditions
+from tpfa.boundary_conditions import BoundaryConditions
 from scipy.sparse import csr_matrix, lil_matrix
 from scipy.sparse.linalg import spsolve
+from preprocessor import M
+import os
+
+print("Initializating mesh")
+os.system('python preprocessor.py')
+dx, dy, dz = 1, 1, 1
+nx, ny, nz = 25, 25,25
+cx, cy, cz = 5, 5, 5
+rx, ry, rz = 5, 5, 5
+num_elements = nx*ny*nz
+num_elements_coarse = rx*ry*rz
 
 def equiv_perm(k1, k2):
     return (2*k1*k2)/(k1 + k2)
 
 def centroid_dist(c1, c2):
     return ((c1-c2)**2).sum()
-
-print("Initializating mesh")
-start = time.time()
-dx, dy, dz = 1, 1, 1
-nx, ny, nz = 20, 20,20
-cx, cy, cz = 5, 5, 5
-rx, ry, rz = 4, 4, 4
-num_elements = nx*ny*nz
-num_elements_coarse = rx*ry*rz
-M = msh("20.h5m", dim = 3)
-end = time.time()
-print("This step lasted {0}s".format(end-start))
 
 print("Setting the permeability")
 M.permeability[:] = 1
