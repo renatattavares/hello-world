@@ -1,7 +1,5 @@
 """
-Assuming this is file mymodule.py, then this string, being the
-first statement in the file, will become the "mymodule" module's
-docstring when the file is imported.
+Generator of mesh entities and tags
 """
 
 import numpy as np

@@ -1,3 +1,6 @@
+"""
+Geometric methods to compute volumes, areas, distances of the mesh entities
+"""
 
 ## Geoemtric Module
 # Create by Artur Castiel and Renata Tavares

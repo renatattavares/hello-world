@@ -7,7 +7,7 @@
 #shManager.py
 
 
-print('Inicializando Bilbioteca de Geometria')
+print('Geometry module initialized')
 #from meshManager.py import MeshManager as ms
 
 #from .Structured import Preprocessor as Structured

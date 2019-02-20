@@ -1,3 +1,6 @@
+"""
+Generator of multiscale mesh entities and tags
+"""
 import numpy as np
 from . meshComponents import MoabVariable, MeshEntities
 

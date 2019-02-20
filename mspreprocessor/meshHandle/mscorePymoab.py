@@ -1,3 +1,6 @@
+"""
+Use of Pymoab methods to manage the multiscale mesh
+"""
 from . corePymoab import CoreMoab
 
 from pymoab import core, types, rng, topo_util

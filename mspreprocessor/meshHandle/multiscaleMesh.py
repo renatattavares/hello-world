@@ -1,4 +1,6 @@
-
+"""
+Module for implementation of multiscale mesh and CoarseVolumes objects functionalities
+"""
 import time
 import pdb
 import configparser as cp
