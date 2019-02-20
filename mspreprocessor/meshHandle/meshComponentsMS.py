@@ -5,7 +5,7 @@ import numpy as np
 from . meshComponents import MoabVariable, MeshEntities
 
 from pymoab import types, rng
-import geoUtil.geoTools as gtool
+from ..geoUtil import geoTools as gtool
 import pdb
 
 
@@ -103,12 +103,12 @@ class MultiscaleMeshEntities(object):
         self.num_coarse = len(coarse_list)
         print("Setting the coarse neighbors of primal mesh")
         self.find_coarse_neighbours(coarse_list)
+        print('Pronto')
         self.num = {"nodes": 0, "node": 0, "edges": 1, "edge": 1, "faces": 2, "face": 2, "volumes": 3, "volume": 3,
                              0: 0, 1: 1, 2: 2, 3: 3}
         # self.local_tag = coarse_list[0].core.handleDic[coarse_list[0].core.id_name]
         self.local_tag =  [el.core.handleDic["LOCAL_ID_L" + str(el.core.level) + "-" + str(el.core.coarse_num)] for el in coarse_list]
         self.global_tag = father_core.handleDic["GLOBAL_ID"]
-
         self.all_volumes = father_core.all_volumes
         self.all_faces = father_core.all_faces
         self.all_edges = father_core.all_edges
