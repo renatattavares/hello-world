@@ -10,6 +10,6 @@ from math import pi, sqrt
 from pymoab import core, types, rng, topo_util
 
 start = time.time()
-M = msh("25.h5m", dim = 3)
+M = msh("20.h5m", dim = 3)
 end = time.time()
 print("The preprocessing step lasted {0}s".format(end-start))

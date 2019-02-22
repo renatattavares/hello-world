@@ -47,7 +47,7 @@ bc = BoundaryConditions(num_elements, nx, ny, coef)
 end = time.time()
 print("This step lasted {0}s".format(end-start))
 
-'''
+
 workbook = xlsxwriter.Workbook('coef_mspreprocessor.xlsx')
 worksheet = workbook.add_worksheet()
 matrix = lil_matrix.toarray(coef)
@@ -60,7 +60,7 @@ for row in range(125):
     worksheet.write(row, col, matrix[row][col])
 
 workbook.close()
-'''
+
 
 print("Solving the problem")
 start = time.time()
@@ -78,4 +78,4 @@ end = time.time()
 print("This step lasted {0}s".format(end-start))
 
 print("Printing results")
-M.core.print()
+#M.core.print()

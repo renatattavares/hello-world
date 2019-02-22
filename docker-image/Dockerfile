@@ -9,5 +9,4 @@ RUN pip install scipy
 RUN pip install XlsxWriter==1.1.2
 RUN pip install pyprof2calltree
 
-
 WORKDIR $HOME
