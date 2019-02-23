@@ -84,8 +84,7 @@ class FineScaleMeshMS(FineScaleMesh):
             # [partition[:],coarse_center]  = getattr(msCoarseningLib.algoritmo, name_function)(self.volumes.center[:],
             #            len(self), self.rx, self.ry, self.rz,*used_attributes)
         elif self.dim == 2:
-            partition = MoabVariable(self.core,data_size=1,var_type= "faces",  data_format="int", name_tag="Parallel",
-                                         data_density="sparse")
+            partition = MoabVariable(self.core,data_size=1,var_type= "faces",  data_format="int", name_tag="Parallel", data_density="sparse")
         return partition
 
     def read_config(self, config_input="msCoarse.ini"):

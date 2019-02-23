@@ -131,20 +131,31 @@ class MultiscaleMeshEntities(object):
                     self.connectivities[y,x]  =  True
 
     def find_coarse_neighbours(self,coarse_list):
-        self.nodes_neighbors  = np.array([self.num_coarse, self.num_coarse],)
-
-        #self.edges_neighbors  = {}
-        #self.faces_neighbors  = {}
-        #self.volumes_neighbors  = {}
+        self.nodes_neighbors  = {}
+        self.edges_neighbors  = {}
+        self.faces_neighbors  = {}
+        self.volumes_neighbors  = {}
+        self.all_nodes_neighbors = rng.Range()
+        self.all_edges_neighbors = rng.Range()
+        self.all_faces_neighbors = rng.Range()
+        self.all_volumes_neighbors = rng.Range()
         for x in range(self.num_coarse):
             for y in range(x+1,self.num_coarse):
-                pdb.set_trace()
                 self.nodes_neighbors[x,y] = rng.intersect(coarse_list[x].core.boundary_nodes, coarse_list[y].core.boundary_nodes)
+                temp = self.nodes_neighbors[x,y]
+                [self.all_nodes_neighbors.insert(e) for e in temp]
 
-        self.all_nodes_neighbors = rng.Range()
-        for el in self.nodes_neighbors.values():
-            self.all_nodes_neighbors = rng.unite(self.all_nodes_neighbors,el)
+                self.edges_neighbors[x,y] = rng.intersect(coarse_list[x].core.boundary_edges, coarse_list[y].core.boundary_edges)
+                temp = self.edges_neighbors[x,y]
+                [self.all_nodes_neighbors.insert(e) for e in temp]
 
+                self.faces_neighbors[x,y] = rng.intersect(coarse_list[x].core.boundary_faces, coarse_list[y].core.boundary_faces)
+                temp = self.faces_neighbors[x,y]
+                [self.all_faces_neighbors.insert(e) for e in temp]
+
+                self.volumes_neighbors[x,y] = rng.intersect(coarse_list[x].core.boundary_volumes, coarse_list[y].core.boundary_volumes)
+                temp = self.volumes_neighbors[x,y]
+                [self.all_volumes_neighbors.insert(e) for e in temp]
 
     def global_to_local_id(self,vec_range,element, target ):
         flag = self.num[element]

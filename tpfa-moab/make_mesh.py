@@ -5,9 +5,9 @@ from gerador_malha import GeradorMalha as gm
 
 ####################### Informações de entrada da malha ########################
 
-nx = 5 # Número de elementos na direção x
-ny = 5 # Número de elementos na direção y
-nz = 5 # Número de elementos na direção Z
+nx = 80 # Número de elementos na direção x
+ny = 80 # Número de elementos na direção y
+nz = 80 # Número de elementos na direção Z
 dx, dy, dz= 1.0, 1.0, 1.0 # Tamanho dos elementos nas direções x e y
 dim = 2
 num_elements = nx*ny*nz
