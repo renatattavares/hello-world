@@ -7,6 +7,10 @@ services:
 
 before_install:
   - docker build -t desenvolvimento docker-image/
+  - pip install coveralls
 
 script:
   - docker run -t -it -v $PWD:/hello-world desenvolvimento bash -c "cd /hello-world && python preprocessor.py test"
+  
+after_success:
+  - coveralls
