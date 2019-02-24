@@ -20,12 +20,6 @@ class GetItem(object):
 
 
 class MeshEntities(object):
-    """
-    The MeshEntities' docstring
-
-    Define something here!
-    """
-
     def __init__(self, core, entity_type):
         self.mb = core.mb
         self.mtu = core.mtu
@@ -83,9 +77,25 @@ class MeshEntities(object):
 
     def bridge_adjacencies(self, index, interface, target):
         """
-        The bridge_adjacencies' docstring
+        Get the adjacencies of a set of entities (or a single entity) connected through an especific interface.
 
-        Define bridge_adjacencies here!
+        -- Example --
+
+        volumes_ids = M.volumes.all
+        volumes_adjacencies = M.volumes.bridge_adjacencies(M.volumes.all, 2, 3)
+
+        -- Parameters --
+
+        index : integer
+            Indexes of entity or entities to get adjacent entities from.
+        interface : integer
+            Dimension of the interface entities.
+        target : integer
+            Dimension of the target entities.
+
+        --Returns--
+
+        An array containing the indexes of adjacents entities
         """
         # lacks support for indexing with multiple numbers
         range_vec = self.create_range_vec(index)
