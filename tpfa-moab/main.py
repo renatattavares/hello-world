@@ -1,6 +1,6 @@
 import numpy as np
 import time
-import xlsxwriter
+#import xlsxwriter
 from gerador_malha import GeradorMalha as gm
 from condicoes_contorno import BoundaryConditions as bc
 from pymoab import types, rng, topo_util
@@ -52,7 +52,7 @@ print("Initializating mesh")
 malha = gm(nx,ny,nz,dx,dy,dz,num_elements)
 mtu = topo_util.MeshTopoUtil(malha.mbcore)
 
-'''
+
 print("Creating tags")
 start = time.time()
 # Determinando as coordenadas do centroide de cada elemento e armazenando-as em tags. Uma tag é um valor associado a cada elemento. Aqui, cada elemento possui duas tags: uma que armazena o valor das coordenadas do centroide e outra que armazena a permeabilidade.
@@ -105,7 +105,7 @@ coef, q = pressao_prescrita(coef, num_elements, nx, ny)
 end = time.time()
 print("This step lasted {0}s".format(end-start))
 
-
+'''
 workbook = xlsxwriter.Workbook('coef_certo.xlsx')
 worksheet = workbook.add_worksheet()
 matrix = lil_matrix.toarray(coef)
@@ -118,7 +118,7 @@ for row in range(125):
     worksheet.write(row, col, matrix[row][col])
 
 workbook.close()
-
+'''
 
 print("Solving the problem")
 start = time.time()
@@ -138,4 +138,3 @@ for e in malha.elem_handles:
 malha.write_files()
 end = time.time()
 print("This step lasted {0}s".format(end-start))
-'''

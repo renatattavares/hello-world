@@ -3,7 +3,7 @@ import numpy as np
 import time
 import pdb
 import xlsxwriter
-from math import pi, sqrt
+from math import pi
 from pymoab import rng, types
 from tpfa.boundary_conditions import BoundaryConditions
 from scipy.sparse import csr_matrix, lil_matrix

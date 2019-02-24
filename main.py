@@ -5,7 +5,7 @@ import pdb
 import xlsxwriter
 from tpfa.boundary_conditions import BoundaryConditions
 from math import sqrt
-from pymoab import rng, types
+from pymoab import rng
 from scipy.sparse import csr_matrix, lil_matrix
 from scipy.sparse.linalg import spsolve
 from preprocessor import M

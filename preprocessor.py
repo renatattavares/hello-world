@@ -6,7 +6,7 @@ import time
 import pdb
 import mspreprocessor.geoUtil.geoTools as gtool
 
-from math import pi, sqrt
+from math import pi
 from pymoab import core, types, rng, topo_util
 
 start = time.time()

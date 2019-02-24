@@ -7,7 +7,7 @@ class partitionManager(object):
         pass
         with open(file_path) as file: # Use file to refer to the file object
            data = file.read()
-           m = yaml.load(data)
+           m = yaml.safe_load(data)
         self.create_tree(m)
 
         # partition tree
