@@ -9,4 +9,4 @@ before_install:
   - docker build -t desenvolvimento docker-image/
 
 script:
-  - docker run desenvolvimento /bin/bash -c "python preprocessor.py test"
+  - docker run -t -it -v $PWD:/base_dir desenvolvimento bash -c "cd /base_dir && python preprocessor.py test"
