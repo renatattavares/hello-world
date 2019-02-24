@@ -1,6 +1,6 @@
 import numpy as np
 import time
-import xlsxwriter
+#import xlsxwriter
 from gerador_malha import GeradorMalha as gm
 
 ####################### Informações de entrada da malha ########################
