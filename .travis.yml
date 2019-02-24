@@ -1,1 +1,12 @@
+sudo: required
+
 language: python
+
+services:
+  - docker
+
+before_install:
+  - docker build -t desenvolvimento docker-image/
+
+script:
+  - docker run desenvolvimento bash -c "python preprocessor.py test"
