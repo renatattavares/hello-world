@@ -1,0 +1,6 @@
+Partitioner Scheme: '1'
+
+Coarsening:
+    - nx: 5
+    - ny: 5
+    - nz: 5
