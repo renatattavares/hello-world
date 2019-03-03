@@ -1,24 +1,19 @@
-
-import numpy as np
+#import pdb
+#import xlsxwriter
 import time
-import pdb
-import xlsxwriter
+import numpy as np
 from tpfa.boundary_conditions import BoundaryConditions
-from math import sqrt
 from pymoab import rng
 from scipy.sparse import csr_matrix, lil_matrix
 from scipy.sparse.linalg import spsolve
 from preprocessor import M
-import os
 
-os.system('python preprocessor.py')
 
 def equiv_perm(k1, k2):
     return (2*k1*k2)/(k1 + k2)
 
 def centroid_dist(c1, c2):
     return ((c1-c2)**2).sum()
-
 
 nx, ny, nz = 20, 20, 20
 num_elements = nx*ny*nz
@@ -47,7 +42,7 @@ bc = BoundaryConditions(num_elements, nx, ny, coef)
 end = time.time()
 print("This step lasted {0}s".format(end-start))
 
-
+'''
 workbook = xlsxwriter.Workbook('coef_mspreprocessor.xlsx')
 worksheet = workbook.add_worksheet()
 matrix = lil_matrix.toarray(coef)
@@ -60,7 +55,7 @@ for row in range(125):
     worksheet.write(row, col, matrix[row][col])
 
 workbook.close()
-
+'''
 
 print("Solving the problem")
 start = time.time()

@@ -8,8 +8,6 @@ from ..msCoarseningLib import algoritmo
 from . meshComponents import MoabVariable, MeshEntities
 from . mscorePymoab import MsCoreMoab
 from . meshComponentsMS import MultiscaleMeshEntities, MoabVariableMS,  MeshEntitiesMS
-import numpy as np
-from math import pi, sqrt
 from pymoab import core, types, rng, topo_util
 import yaml
 

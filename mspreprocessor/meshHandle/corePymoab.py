@@ -5,7 +5,7 @@ from pymoab import core, types, rng, topo_util
 from pymoab import skinner as sk
 import numpy as np
 import yaml
-import pdb
+#import pdb
 
 
 class CoreMoab:
@@ -302,7 +302,7 @@ class CoreMoab:
 
     def print(self, text=None, config_input="print_settings.yml"):
         with open("print_settings.yml", 'r') as f:
-            data = yaml.load(f)
+            data = yaml.safe_load(f)
 
         nodes = data['nodes']
         edges = data['edges']
