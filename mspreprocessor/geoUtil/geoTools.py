@@ -1,14 +1,11 @@
 """
 Geometric methods to compute volumes, areas, distances of the mesh entities
 """
-
-## Geoemtric Module
+# Geoemtric Module
 # Create by Artur Castiel and Renata Tavares
 
-
+#import pdb
 import numpy as np
-
-import pdb
 from numba import jit
 
 # class for volume related problem

@@ -1,13 +1,13 @@
 """
-Module for management of fine scale mesh 
+Module for management of fine scale mesh
 """
 import time
 import pdb
 import numpy as np
-from math import pi, sqrt
+from math import sqrt
 from pymoab import core, types, rng, topo_util
 from . corePymoab import CoreMoab
-from . meshComponents import MoabVariable, MeshEntities
+from . meshComponents import MeshEntities
 
 print('Standard fine-scale mesh loaded: No multiscale components available')
 

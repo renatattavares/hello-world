@@ -17,7 +17,6 @@ class BoundaryConditions():
         else:
             self. pressao_prescrita()
             self.vazao_prescrita()
-            pass
 
     def pressao_prescrita(self):
         self.coef[0:24] = 0

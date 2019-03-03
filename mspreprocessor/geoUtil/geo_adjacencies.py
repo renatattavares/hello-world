@@ -47,7 +47,7 @@ def get_hexahedro_adjacencies(vertices, edges):
     aux1 = rng.Range()
     aux2 = rng.Range()
     base_nodes = rng.Range()
-    top_nodes = rng.Range()
+    top_node = rng.Range()
 
     # Discovering the top node of the pyramid
     for e in vertex_handles:

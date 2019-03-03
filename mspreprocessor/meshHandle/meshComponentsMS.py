@@ -37,7 +37,7 @@ class MeshEntitiesMS(MeshEntities):
         self.coarse_neighbors =  np.array([key for key, value in self.coarse_neighbors_dic.items() if not value.empty()])
         self.all_coarse_neighbors_range= rng.Range()
         for el in self.coarse_neighbors_dic.values():
-            self.all_coarse_neighbors_range=s = rng.unite(self.all_coarse_neighbors_range,el)
+            self.all_coarse_neighbors_range = rng.unite(self.all_coarse_neighbors_range,el)
         self.elements_in_coarse_neighborhood = GetItem(self._elements_in_coarse_neighborhood)
 
     def _elements_in_coarse_neighborhood(self,x):
@@ -141,19 +141,19 @@ class MultiscaleMeshEntities(object):
             for y in range(x+1,self.num_coarse):
                 self.nodes_neighbors[x,y] = rng.intersect(coarse_list[x].core.boundary_nodes, coarse_list[y].core.boundary_nodes)
                 temp = self.nodes_neighbors[x,y]
-                [self.all_nodes_neighbors.insert(e) for e in temp]
+                self.all_nodes_neighbors = [insert(e) for e in temp]
 
                 self.edges_neighbors[x,y] = rng.intersect(coarse_list[x].core.boundary_edges, coarse_list[y].core.boundary_edges)
                 temp = self.edges_neighbors[x,y]
-                [self.all_edges_neighbors.insert(e) for e in temp]
+                self.all_edges_neighbors = [insert(e) for e in temp]
 
                 self.faces_neighbors[x,y] = rng.intersect(coarse_list[x].core.boundary_faces, coarse_list[y].core.boundary_faces)
                 temp = self.faces_neighbors[x,y]
-                [self.all_faces_neighbors.insert(e) for e in temp]
+                self.all_faces_neighbors = [insert(e) for e in temp]
 
                 self.volumes_neighbors[x,y] = rng.intersect(coarse_list[x].core.boundary_volumes, coarse_list[y].core.boundary_volumes)
                 temp = self.volumes_neighbors[x,y]
-                [self.all_volumes_neighbors.insert(e) for e in temp]
+                self.all_volumes_neighbors = [insert(e) for e in temp]
 
     def global_to_local_id(self,vec_range,element, target ):
         flag = self.num[element]

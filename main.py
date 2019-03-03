@@ -3,8 +3,7 @@
 import time
 import numpy as np
 from tpfa.boundary_conditions import BoundaryConditions
-from pymoab import rng
-from scipy.sparse import csr_matrix, lil_matrix
+from scipy.sparse import lil_matrix
 from scipy.sparse.linalg import spsolve
 from preprocessor import M
 

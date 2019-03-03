@@ -1,14 +1,14 @@
 """
 Module for implementation of multiscale mesh and CoarseVolumes objects functionalities
 """
-import time
+#import time
 #import pdb
 from . finescaleMesh import FineScaleMesh
 from ..msCoarseningLib import algoritmo
-from . meshComponents import MoabVariable, MeshEntities
+from . meshComponents import MoabVariable
 from . mscorePymoab import MsCoreMoab
 from . meshComponentsMS import MultiscaleMeshEntities, MoabVariableMS,  MeshEntitiesMS
-from pymoab import core, types, rng, topo_util
+from pymoab import core, types, rng
 import yaml
 
 
@@ -84,7 +84,7 @@ class FineScaleMeshMS(FineScaleMesh):
 
     def read_config(self, config_input="msCoarse.yml"):
         with open("msCoarse.yml", 'r') as f:
-            config_file = yaml.load(f)
+            config_file = yaml.safe_load(f)
         return config_file
 
 
@@ -111,8 +111,6 @@ class CoarseVolume(FineScaleMeshMS):
         self.faces.enhance(i,general)
         if self.dim == 3:
             self.volumes.enhance(i,general)
-
-        pass
 
     def init_coarse_variables(self):
         #self.lama = MoabVariableMS(self.core,data_size=1,var_type= "faces",  data_format="int", name_tag="lama", level=self.level, coarse_num=self.coarse_num)
