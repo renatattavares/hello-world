@@ -1,18 +1,16 @@
 # UPSCALLING OF STRUCTURED MESHES
+    
+#import pdb
+#import xlsxwriter
 import numpy as np
 import time
-import pdb
-import xlsxwriter
-from math import pi
-from pymoab import rng, types
-from tpfa.boundary_conditions import BoundaryConditions
+from pymoab import rng
 from scipy.sparse import csr_matrix, lil_matrix
 from scipy.sparse.linalg import spsolve
 from preprocessor import M
-import os
 
 print("Initializating mesh")
-os.system('python preprocessor.py')
+
 dx, dy, dz = 1, 1, 1
 nx, ny, nz = 25, 25,25
 cx, cy, cz = 5, 5, 5

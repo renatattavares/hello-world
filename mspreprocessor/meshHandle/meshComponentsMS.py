@@ -3,10 +3,8 @@ Generator of multiscale mesh entities and tags
 """
 import numpy as np
 from . meshComponents import MoabVariable, MeshEntities
-
 from pymoab import types, rng
-from ..geoUtil import geoTools as gtool
-import pdb
+#mport pdb
 
 
 class GetItem(object):
@@ -147,7 +145,7 @@ class MultiscaleMeshEntities(object):
 
                 self.edges_neighbors[x,y] = rng.intersect(coarse_list[x].core.boundary_edges, coarse_list[y].core.boundary_edges)
                 temp = self.edges_neighbors[x,y]
-                [self.all_nodes_neighbors.insert(e) for e in temp]
+                [self.all_edges_neighbors.insert(e) for e in temp]
 
                 self.faces_neighbors[x,y] = rng.intersect(coarse_list[x].core.boundary_faces, coarse_list[y].core.boundary_faces)
                 temp = self.faces_neighbors[x,y]
