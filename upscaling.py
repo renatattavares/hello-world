@@ -1,5 +1,5 @@
 # UPSCALLING OF STRUCTURED MESHES
-    
+
 #import pdb
 #import xlsxwriter
 import numpy as np
@@ -8,6 +8,7 @@ from pymoab import rng
 from scipy.sparse import csr_matrix, lil_matrix
 from scipy.sparse.linalg import spsolve
 from preprocessor import M
+
 
 print("Initializating mesh")
 

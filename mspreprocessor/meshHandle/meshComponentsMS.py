@@ -95,13 +95,9 @@ class MoabVariableMS(MoabVariable):
 
 class MultiscaleMeshEntities(object):
     def __init__(self,father_core,coarse_list):
-        print("Calling moab core inside MultiscaleMeshEntities")
         self.mb = father_core.mb
-        print("Calculating the number of coarse volumes of the mesh")
         self.num_coarse = len(coarse_list)
-        print("Setting the coarse neighbors of primal mesh")
         self.find_coarse_neighbours(coarse_list)
-        print('Pronto')
         self.num = {"nodes": 0, "node": 0, "edges": 1, "edge": 1, "faces": 2, "face": 2, "volumes": 3, "volume": 3,
                              0: 0, 1: 1, 2: 2, 3: 3}
         # self.local_tag = coarse_list[0].core.handleDic[coarse_list[0].core.id_name]
@@ -141,19 +137,19 @@ class MultiscaleMeshEntities(object):
             for y in range(x+1,self.num_coarse):
                 self.nodes_neighbors[x,y] = rng.intersect(coarse_list[x].core.boundary_nodes, coarse_list[y].core.boundary_nodes)
                 temp = self.nodes_neighbors[x,y]
-                self.all_nodes_neighbors = [insert(e) for e in temp]
+                [self.all_nodes_neighbors.insert(e) for e in temp]
 
                 self.edges_neighbors[x,y] = rng.intersect(coarse_list[x].core.boundary_edges, coarse_list[y].core.boundary_edges)
                 temp = self.edges_neighbors[x,y]
-                self.all_edges_neighbors = [insert(e) for e in temp]
+                [self.all_edges_neighbors.insert(e) for e in temp]
 
                 self.faces_neighbors[x,y] = rng.intersect(coarse_list[x].core.boundary_faces, coarse_list[y].core.boundary_faces)
                 temp = self.faces_neighbors[x,y]
-                self.all_faces_neighbors = [insert(e) for e in temp]
+                [self.all_faces_neighbors.insert(e) for e in temp]
 
                 self.volumes_neighbors[x,y] = rng.intersect(coarse_list[x].core.boundary_volumes, coarse_list[y].core.boundary_volumes)
                 temp = self.volumes_neighbors[x,y]
-                self.all_volumes_neighbors = [insert(e) for e in temp]
+                [self.all_volumes_neighbors.insert(e) for e in temp]
 
     def global_to_local_id(self,vec_range,element, target ):
         flag = self.num[element]
