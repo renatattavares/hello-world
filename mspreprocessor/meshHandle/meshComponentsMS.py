@@ -136,18 +136,22 @@ class MultiscaleMeshEntities(object):
         for x in range(self.num_coarse):
             for y in range(x+1,self.num_coarse):
                 self.nodes_neighbors[x,y] = rng.intersect(coarse_list[x].core.boundary_nodes, coarse_list[y].core.boundary_nodes)
+                self.nodes_neighbors[y,x] = self.nodes_neighbors[x,y]
                 temp = self.nodes_neighbors[x,y]
                 [self.all_nodes_neighbors.insert(e) for e in temp]
 
                 self.edges_neighbors[x,y] = rng.intersect(coarse_list[x].core.boundary_edges, coarse_list[y].core.boundary_edges)
+                self.edges_neighbors[y,x] = self.edges_neighbors[x,y]
                 temp = self.edges_neighbors[x,y]
                 [self.all_edges_neighbors.insert(e) for e in temp]
 
                 self.faces_neighbors[x,y] = rng.intersect(coarse_list[x].core.boundary_faces, coarse_list[y].core.boundary_faces)
+                self.faces_neighbors[y,x] = self.faces_neighbors[x,y]
                 temp = self.faces_neighbors[x,y]
                 [self.all_faces_neighbors.insert(e) for e in temp]
 
                 self.volumes_neighbors[x,y] = rng.intersect(coarse_list[x].core.boundary_volumes, coarse_list[y].core.boundary_volumes)
+                self.volumes_neighbors[y,x] = self.volumes_neighbors[x,y]
                 temp = self.volumes_neighbors[x,y]
                 [self.all_volumes_neighbors.insert(e) for e in temp]
 
