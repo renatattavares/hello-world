@@ -1,14 +1,10 @@
 """
 Use of Pymoab methods to manage the multiscale mesh
 """
+#import pdb
 from . corePymoab import CoreMoab
-
-from pymoab import core, types, rng, topo_util
-from pymoab import skinner as sk
+from pymoab import core, types, rng
 import numpy as np
-import pdb
-
-
 
 class MsCoreMoab(CoreMoab):
     def __init__(self, father_core, num, coarse_vec):

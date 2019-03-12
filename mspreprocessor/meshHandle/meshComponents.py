@@ -2,10 +2,10 @@
 Generator of mesh entities and tags
 """
 
+#import pdb
 import numpy as np
 from pymoab import types, rng
 from ..geoUtil import geoTools as gtool
-import pdb
 
 
 class GetItem(object):
@@ -177,7 +177,7 @@ class MeshEntities(object):
 
     def _normal(self,index):
         range_vec = self.create_range_vec(index)
-        normal_vec = np.zeros(( np.shape(range_vec)[0],3 ))
+        #normal_vec = np.zeros(( np.shape(range_vec)[0],3 ))
         if self.vID == 1:
             all_adj = self.connectivities[range_vec]
             return gtool.normal_vec_2d(self._coords(all_adj[:,0]),self._coords(all_adj[:,1]))

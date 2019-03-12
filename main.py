@@ -3,8 +3,7 @@
 import time
 import numpy as np
 from tpfa.boundary_conditions import BoundaryConditions
-from pymoab import rng
-from scipy.sparse import csr_matrix, lil_matrix
+from scipy.sparse import lil_matrix
 from scipy.sparse.linalg import spsolve
 from preprocessor import M
 
@@ -15,7 +14,7 @@ def equiv_perm(k1, k2):
 def centroid_dist(c1, c2):
     return ((c1-c2)**2).sum()
 
-nx, ny, nz = 20, 20, 20
+nx, ny, nz = 25, 25, 25
 num_elements = nx*ny*nz
 
 print("Setting the permeability")

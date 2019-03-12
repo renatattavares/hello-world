@@ -2,7 +2,6 @@
 
 print('Partitioning module initialized')
 
-__all__ = ["readConfig","algoritmo"]
+#__all__ = ["readConfig","algoritmo"]
 #import meshManager
-
-print(__name__)
+#print(__name__)

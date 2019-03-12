@@ -2,9 +2,8 @@ import numpy as np
 import time
 #import xlsxwriter
 from gerador_malha import GeradorMalha as gm
-from condicoes_contorno import BoundaryConditions as bc
-from pymoab import types, rng, topo_util
-from scipy.sparse import csr_matrix, lil_matrix
+from pymoab import types, topo_util
+from scipy.sparse import lil_matrix
 from scipy.sparse.linalg import spsolve
 
 ################################################################################

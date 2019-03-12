@@ -2,10 +2,9 @@
 Schemes of partitioning
 """
 
+#import pdb
 import numpy as np
 from numba import jit
-import pdb
-
 
 #para definir funções de particionamento deve-se atentar as saidas
 #é necessário retornar um vetor tag que associa uma partição a cada celula fina

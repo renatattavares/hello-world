@@ -330,7 +330,6 @@ class CoreMoab:
         text3 = text + "-volume" + extension
         text4 = text + "-edges" + extension
         text5 = text + "-all" + extension
-        text6 = text + "-together" + extension
 
         if nodes != 0:
             self.mb.write_file(text1, [m1])

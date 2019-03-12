@@ -1,5 +1,5 @@
+#import pdb
 import configparser as cp
-import pdb
 import yaml
 
 class partitionManager(object):
@@ -17,8 +17,9 @@ class partitionManager(object):
 
 
     def create_tree(self,m):
-        print(m)
         pass
+        print(m)
+
 
     def create_root_set(self, config_file):
         self.tree['root'] = {}
