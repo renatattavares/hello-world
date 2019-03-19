@@ -1,5 +1,5 @@
 #import pdb
-#import xlsxwriter
+import xlsxwriter
 import time
 import numpy as np
 from tpfa.boundary_conditions import BoundaryConditions
@@ -14,15 +14,17 @@ def equiv_perm(k1, k2):
 def centroid_dist(c1, c2):
     return ((c1-c2)**2).sum()
 
-nx, ny, nz = 25, 25, 25
+nx, ny, nz = 5, 5, 5
 num_elements = nx*ny*nz
 
 print("Setting the permeability")
-M.permeability[:] = 1
+#M.permeability[:] = 1
+permeability = np.array([[1,0,0],[0,100,0],[0,0,200]])
+
 
 print("Assembly")
 start = time.time()
-perm = M.permeability[:]
+#perm = M.permeability[:]
 adj = M.volumes.bridge_adjacencies(M.volumes.all, 2, 3)
 center = M.volumes.center[M.volumes.all]
 coef = lil_matrix((num_elements, num_elements), dtype=np.float_)
@@ -30,7 +32,10 @@ for i in range(num_elements):
     adjacencies = adj[i]
     for j in range(len(adjacencies)):
         id = np.array([adjacencies[j]],  dtype= np.int)
-        coef[i,id] = equiv_perm(perm[i], perm[id])/centroid_dist(center[i], center[id])
+        direction = (center[i]-center[id])**2
+        perm = np.linalg.norm(np.dot(direction, permeability))
+        coef[i,id] = perm/centroid_dist(center[i], center[id])
+        print(coef[i,id])
     coef[i,i] = (-1)*coef[i].sum()
 end = time.time()
 print("This step lasted {0}s".format(end-start))
@@ -72,4 +77,4 @@ end = time.time()
 print("This step lasted {0}s".format(end-start))
 
 print("Printing results")
-#M.core.print()
+M.core.print()
